@@ -1,12 +1,24 @@
 #!/bin/sh
 
 echo "Post Commit Script Started"
-branch=`git rev-parse --abbrev-ref HEAD`
 
-status=`curl -s -I -u username:password "http://localhost:8080/job/game-of-life_$branch/config.xml" | grep HTTP/1.1 | awk {'print $2'}`
+# Get the Jenkins user credentials in environmental variables
+export USERNAME=`cat ~/.jenkins/credentials | cut -d ',' -f1`
+export PASSWORD=`cat ~/.jenkins/credentials | cut -d ',' -f2`
+# Get the working branch
+branch=`git rev-parse --abbrev-ref HEAD`
+# Replace the branch name in config.xml
+sed -i 's/*\/master/*\/'$branch'/g' $HOME/config.xml
+
+echo "The current git working branch is : $branch"
+# Checking if this git branch has a Jenkins job associated with it. If the status returned is 404, we do not have a job for this branch yet.
+status=`curl -s -I -u $USERNAME:$PASSWORD "http://localhost:8080/job/game-of-life_$branch/config.xml" | grep HTTP/1.1 | awk {'print $2'}`
 if [ $status -eq 404 ]
 then
-	curl -u username:password -H "Content-Type:text/xml" -d @config.xml -X POST "http://localhost:8080/createItem?name=game-of-life_$branch"
+	echo "$branch doesn't have a Jenkins job. Going ahead and creating a Jenkins job with jobname : game-of-life_$branch"
+	curl -u $USERNAME:$PASSWORD -H "Content-Type:text/xml" -d @$HOME/config.xml -X POST "http://localhost:8080/createItem?name=game-of-life_$branch"
 fi 
 
-curl -u username:password -X POST "http://localhost:8080/job/game-of-life_$branch/buildWithParameters?BRANCH_NAME_TO_BUILD="$branch
+echo "Building the Maven project on Jenkins"
+# Build the project
+curl -u $USERNAME:$PASSWORD -X POST "http://localhost:8080/job/game-of-life_$branch/build"
