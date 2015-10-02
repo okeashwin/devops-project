@@ -8,6 +8,7 @@ export PASSWORD=`cat ~/.jenkins/credentials | cut -d ',' -f2`
 # Get the working branch
 branch=`git rev-parse --abbrev-ref HEAD`
 # Replace the branch name in config.xml
+cp $HOME/config_template.xml $HOME/config.xml
 sed -i 's/*\/master/*\/'$branch'/g' $HOME/config.xml
 
 echo "The current git working branch is : $branch"
