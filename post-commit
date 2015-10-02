@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "Post Commit Script Started"
+branch=`git rev-parse --abbrev-ref HEAD`
+
+status=`curl -s -I -u username:password "http://localhost:8080/job/game-of-life_$branch/config.xml" | grep HTTP/1.1 | awk {'print $2'}`
+if [ $status -eq 404 ]
+then
+	curl -u username:password -H "Content-Type:text/xml" -d @config.xml -X POST "http://localhost:8080/createItem?name=game-of-life_$branch"
+fi 
+
+curl -u username:password -X POST "http://localhost:8080/job/game-of-life_$branch/buildWithParameters?BRANCH_NAME_TO_BUILD="$branch
