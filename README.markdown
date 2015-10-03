@@ -1,4 +1,17 @@
+### Team Details:
+1. Nisarg Gandhi - ndgandh2
+2. Ashwin Oke - aboke
+3. Nikhil Dalmia - nkdalmia
+
 ### Build section
+
+#### Team Member Contributions
+1. Jenkins initial setup and configuration - Nisarg
+2. Exploring Jenkins REST Apis - Nikhil, Ashwin
+3. Post Commit Script - Ashwin, Nisarg, Nikhil
+4. Mail Server setup - Nikhil, Nisarg
+5. ReadMe file - Nisarg, Ashwin
+6. Screencast - Ashwin
 
 #### Objectives
 ##### The ability to trigger a build in response to a git commit via a [git hook](http://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
@@ -14,3 +27,6 @@ Jenkins UI provides this utility to track current builds and see the history of 
 
 #### Link to the Screencast
 https://www.youtube.com/watch?v=q2N8mCYphwU&feature=youtu.be
+
+### References
+- Demo Project taken from https://github.com/wakaleo/game-of-life
