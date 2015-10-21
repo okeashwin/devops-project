@@ -1,61 +1,23 @@
-Continuous Integration with Jenkins on Amazon EC2
-=================================================
+Prerquisites:
+1. Java 8
+2. Maven ~> 3.1
+	a. Maven should use Java 8(Java_Home should point to Jre 8)
+3. Add evosuite-standalone-runtime as a maven dependency in pom file (not a plugin)
+4. Evosuite is not present in maven central. Explicity add its repository location
+5. Add surefire plugin in pom file version 2.14.1
 
-# testing source tree
+Steps:
+1. Compile all the java classes
+	javac /path/to/javafiles
 
-## Initial Setup
+2. Generate test cases using evosuite referencing all class files
+	- Navigate to the src/test/java folder
+	- Execute following command:
+		java -jar evosuite-1.0.1.jar -class <class-file-name> -projectCP <class-path-to-source-directory>
+	
+	e.g. java -jar ~/Downloads/evosuite-1.0.1.jar -class BankAccount -projectCP ~/devops/JenkinsOnEC2MavenProject/src/main/java/
 
-### Fixing Locales in Ubuntu 13.04 on Amazon EC2
+3. Go to project root folder and execute commands:
 
-```bash
-sudo apt-get install language-pack-en
-```
+	maven clean test
 
-### Installing Jenkins
-
-```bash
-wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
-echo "deb http://pkg.jenkins-ci.org/debian binary/" | sudo tee -a /etc/apt/sources.list.d/jenkins.list
-sudo apt-get update
-sudo apt-get install jenkins
-```
-
-## Installing and Configuring Apache
-
-### Installing Apache
-
-```bash
-sudo apt-get install apache2
-sudo a2enmod proxy
-sudo a2enmod proxy_http
-```
-
-### `/etc/apache2/sites-available/jenkins.conf`
-
-```bash
-<VirtualHost *:80>
-	ServerName HOSTNAME
-	ProxyRequests Off
-	<Proxy *>
-		Order deny,allow
-		Allow from all
-	</Proxy>
-	ProxyPreserveHost on
-	ProxyPass / http://localhost:8080/
-</VirtualHost>
-```
-
-### Enabling `jenkins.conf`
-
-```bash
-sudo a2ensite jenkins
-sudo service apache2 reload
-```
-
-## Installing Java / Maven / Git
-
-```bash
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java7-installer maven git-core
-```
