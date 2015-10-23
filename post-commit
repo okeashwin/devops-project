@@ -23,3 +23,28 @@ fi
 echo "Building the Maven project on Jenkins"
 # Build the project
 curl -u $USERNAME:$PASSWORD -X POST "http://localhost:8080/job/game-of-life_$branch/build"
+branch=`git rev-parse --abbrev-ref HEAD`
+
+status=`curl -s -I -u ndgandh2:09bce114 "http://localhost:8080/job/bogo_$branch/config.xml" | grep HTTP/1.1 | awk {'print $2'}`
+if [ $status -eq 404 ]
+then
+	curl -u ndgandh2:09bce114 -H "Content-Type:text/xml" -d @config.xml -X POST "http://localhost:8080/createItem?name=bogo_$branch"
+fi 
+
+curl -u ndgandh2:09bce114 -X POST "http://localhost:8080/job/bogo_$branch/buildWithParameters?BRANCH_NAME_TO_BUILD="$branch
+
+JOB_URL="http://localhost:8080/job/bogo_$branch"
+JOB_STATUS_URL="${JOB_URL}/lastBuild/api/json"
+
+GREP_RETURN_CODE=0
+
+# Poll every thirty seconds until the build is finished
+while [ $GREP_RETURN_CODE -eq 0 ]
+do
+    sleep 10
+    # Grep will return 0 while the build is running:
+    curl -u ndgandh2:09bce114 --silent $JOB_STATUS_URL | grep result\":null > /dev/null
+    GREP_RETURN_CODE=$?
+done
+
+curl -u ndgandh2:09bce114 "http://localhost:8080/job/bogo/lastBuild/api/json" | grep 
