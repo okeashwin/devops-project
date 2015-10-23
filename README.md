@@ -1,4 +1,4 @@
-## Prerequisites for Evosuite
+# Prerequisites for Evosuite
 	* Java 8
 	* Maven should use Java 8
 	* Add `evosuite-standalone-runtime` as a maven dependency in `pom.xml` file (not a plugin dependency)
