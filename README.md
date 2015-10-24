@@ -1,5 +1,5 @@
 # Milestone 2 Requirements
-
+### Testing setup
 * The ability to run unit tests, measure coverage, and report the results.
 	* We achieved this using JaCoCo. We also integrated JaCoCo coverage with Jenkins using an available Jenkins plugin.
 
@@ -12,6 +12,8 @@
 
 * The ability to improve testing coverage using one of the techniques covered in class: constraint-based test generation, fuzzing, etc. You can use an existing tool or implement your own approach.
 	* We have done this using a test suite generator called 'Evosuite'. A section below gives the steps to set Evosuite up on an Ubuntu system.
+
+### Analysis setup
 
 * The ability to run an existing static analysis tool on the source code (e.g. FindBugs, PMD, CheckStyle, NCover, Lint, etc.), process its results, and report its findings.
 	* FindBugs was used to achieve this. There is a Jenkins plugin for FindBugs as well, which lets us view FindBug reports on Jenkins itself.
