@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Post Commit Script Started"
 
@@ -37,14 +37,29 @@ JOB_URL="http://localhost:8080/job/bogo_$branch"
 JOB_STATUS_URL="${JOB_URL}/lastBuild/api/json"
 
 GREP_RETURN_CODE=0
+goodStatus=''
+badStatus=''
 
 # Poll every thirty seconds until the build is finished
+#while [[ "$goodStatus" == ""  &&  "$badStatus" == "" ]]
 while [ $GREP_RETURN_CODE -eq 0 ]
 do
-    sleep 10
+    sleep 60
     # Grep will return 0 while the build is running:
-    curl -u ndgandh2:09bce114 --silent $JOB_STATUS_URL | grep result\":null > /dev/null
+    goodStatus=`curl -u $USERNAME:$PASSWORD $JOB_STATUS_URL | grep result\":\"SUCCESS\"`
+    badStatus=`curl -u $USERNAME:$PASSWORD $JOB_STATUS_URL | grep result\":\"UNSTABLE\"`
     GREP_RETURN_CODE=$?
 done
 
-curl -u ndgandh2:09bce114 "http://localhost:8080/job/bogo/lastBuild/api/json" | grep 
+returnedJson=`curl -u $USERNAME:$PASSWORD "http://localhost:8080/job/game-of-life_$branch/lastBuild/api/json"`
+#echo $returnedJson
+#buildResult=`echo $returnedJson | jq '. | {result} ' | tail -2 | head -1 | cut -d ':' -f2`
+#echo $buildResult
+buildResult=`echo $returnedJson | grep 'UNSTABLE'`
+if [ -z "$buildResult" ]
+then
+	echo "The build has succeeded."
+else
+	echo "The build has failed or is in an unstable state. Reverting this commit";
+	git reset --soft HEAD~1
+fi
