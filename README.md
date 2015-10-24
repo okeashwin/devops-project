@@ -25,7 +25,9 @@
 
 		* How it was done:
 		 	* Created a separate maven package that can be used to create new rules
-        		* Used GitHub as to host the artifacts of this Maven package https://raw.githubusercontent.com/nkdalmia/mvn-repo/master/artifacts/
+        		* Used GitHub to host the source files and artifacts of this Maven package
+        			* Source: https://github.com/nkdalmia/mvn-repo/
+        			* Artifacts (In mvn-repo itself): https://raw.githubusercontent.com/nkdalmia/mvn-repo/master/artifacts/
     			* Used this custom Checkstyle package in our main project
         			* Create an xml file(sun-checks-modified.xml) to check the custom rule in the main project
 
