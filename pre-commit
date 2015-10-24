@@ -1,0 +1,14 @@
+#!/bin/bash
+
+files=$(git diff --name-only; git diff --name-only --cached)
+pattern="[a-zA-Z0-9]\{40,64\}"
+
+for i in $files; do
+	if grep -q $pattern $i; then
+		echo "$i contains AWS/DigitalOcean secret config key or private ssh key"
+		exit 1	
+	fi
+done
+
+echo "No AWS/DigitalOcean security tokens found in this code commit"
+echo "Going ahead and submitting the build request to Jenkins"
