@@ -35,6 +35,7 @@
 
 ## Link to the Screencast 
 * The demo can be found here : https://www.youtube.com/watch?v=1IJR5slB2z0
+* Static Analysis Tool Extension : https://youtu.be/q71szA4Czyo
 
 ## Prerequisites for Evosuite
 * Java 8
