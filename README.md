@@ -19,7 +19,15 @@
 	* FindBugs was used to achieve this. There is a Jenkins plugin for FindBugs as well, which lets us view FindBug reports on Jenkins itself.
 
 * The ability to extend an existing analysis tool with a custom analysis, or implement a new analysis from scratch. For example, you could write a static analysis that checks for the ratio of comments to code, or finds parse errors in SQL string statements. You could introduce security checks, a dynamic analysis, a data-flow analysis or a data-flow based test coverage.
-	* 
+	* Tool extended: Checkstyle
+		* Checkstyle allows us to write our own custom rules.
+		* New Rule Added: A method parameter should not be of type "Object". Instead, "Generic" type should be used in such case.
+
+		* How it was done:
+		 	* Created a separate maven package that can be used to create new rules
+        		* Used GitHub as to host the artifacts of this Maven package https://raw.githubusercontent.com/nkdalmia/mvn-repo/master/artifacts/
+    			* Used this custom Checkstyle package in our main project
+        			* Create an xml file(sun-checks-modified.xml) to check the custom rule in the main project
 
 * The ability to parse a code files and json files in order to detect the presence of AWS/digital ocean security tokens. The ability to check commited files that are private ssh keys. Using hooks, reject the commit if any violation occurs.
 	* This is handled in a `pre-commit` hook.
