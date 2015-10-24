@@ -23,15 +23,15 @@
 	* This is handled in a `pre-commit` hook.
 	* `pre-commit` hook searches for a pattern matching a regex in the files outgoing for the current commit.
 
-* Link to the Screencast 
-	* The demo can be found here : https://www.youtube.com/watch?v=1IJR5slB2z0
-* Prerequisites for Evosuite
-	* Java 8
-	* Maven should use Java 8
-	* Add `evosuite-standalone-runtime` as a maven dependency in `pom.xml` file (not a plugin dependency)
-	* Evosuite is not present in maven central. Explicity add its repository location
-	* Add surefire plugin in pom file version 2.14.1
+## Link to the Screencast 
+* The demo can be found here : https://www.youtube.com/watch?v=1IJR5slB2z0
 
+## Prerequisites for Evosuite
+* Java 8
+* Maven should use Java 8
+* Add `evosuite-standalone-runtime` as a maven dependency in `pom.xml` file (not a plugin dependency)
+* Evosuite is not present in maven central. Explicity add its repository location
+* Add surefire plugin in pom file version 2.14.1
 * Steps:
 	1. Compile the required java classes for which the test cases need to be generated: `javac <java_src_file_path`
 	2. Generate test cases using evosuite:
